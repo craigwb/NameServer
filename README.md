@@ -10,7 +10,7 @@ project was done in its entirety by
 - Craig Butler
 - Chris Bywaletz
 - Adrian Popescu
-We hereby 
+* We hereby 
 state that we have not received unauthorized help of any form.
 
 Compiliation and Run Instructions:
