@@ -14,6 +14,6 @@ We hereby
 state that we have not received unauthorized help of any form.
 
 Compiliation and Run Instructions:
-javac NameServer.java
-java NameServer BootstrapConfig.txt
-java NameServer NameServerConfig.txt
+-javac NameServer.java
+-java NameServer BootstrapConfig.txt
+-java NameServer NameServerConfig.txt
