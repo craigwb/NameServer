@@ -4,7 +4,7 @@ Craig Butler
 Chris Bywaletz
 Adrian Popescu
 
-Thisproject was done in its entirety by 
+This project was done in its entirety by:
 
 - Craig Butler
 - Chris Bywaletz
