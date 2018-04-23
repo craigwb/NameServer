@@ -52,7 +52,7 @@ public class NameServer extends Thread {
 						pairs = new Node[nodes];
 						for (int i = 0; i < nodes; i++) {
 							pairs[i] = new Node(Integer.parseInt(in.readLine()), in.readLine());
-							System.out.println(pairs[i].key + " " + pairs[i].value);
+							//System.out.println(pairs[i].key + " " + pairs[i].value);
 						}
 						app = new append_listener(bootstrap);
 						entered = true;
@@ -88,7 +88,7 @@ public class NameServer extends Thread {
 								quit = true;
 							else if (split.hasNext()) {
 								if (userIn.equalsIgnoreCase("lookup"))
-									lookup(split.nextInt());
+									System.out.println(lookupC(split.nextInt()));
 								else if (userIn.equalsIgnoreCase("insert"))
 									insert(split.nextInt(), split.next());
 								else if (userIn.equalsIgnoreCase("delete"))
@@ -176,22 +176,59 @@ public class NameServer extends Thread {
 
 	public String lookup(int key) {
 		int i;
+		int IDh = 1024;
+		String ret = "";
+		for(int x = 0; x<count; x++) {
+			if(IDs[x]!=-1 && IDs[x]-key>0 && IDs[x]-key<IDh - key) {
+				IDh = IDs[x];
+			}
+		}
 		boolean found = false;
 		for (i = 0; i < pairs.length; i++) {
 			if (pairs[i] != null && pairs[i].key == key) {
-				System.out.println(key + " " + pairs[i].value);
+				//System.out.println(key + " " + pairs[i].value);
 				found = true;
 				break;
 			}
 		}
 		if (!found) {
-			System.out.println(key + " Key not held");
-			return "Key not held";
+			//System.out.println(key + " Key not held");
+			ret = "Key not held";
 		} else {
-			return pairs[i].value;
+			ret = pairs[i].value;
 		}
+		return ret;
 	}
-
+	public String lookupC(int key) {
+		int i;
+		int IDh = 1024;
+		String ret = "";
+		for(int x = 0; x<count; x++) {
+			if(IDs[x]!=-1 && IDs[x]-key>0 && IDs[x]-key<IDh - key) {
+				IDh = IDs[x];
+			}
+		}
+		if(IDh == 1024) {
+			ret = "Servers contacted were bootstrap server.| Key: "+key+" ";
+		}else {
+			ret = "Servers contacted were bootstrap server then " + IDh + "| Key: "+key+" ";
+		}
+		boolean found = false;
+		for (i = 0; i < pairs.length; i++) {
+			if (pairs[i] != null && pairs[i].key == key) {
+				//System.out.println(key + " " + pairs[i].value);
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			//System.out.println(key + " Key not held");
+			ret = ret+  "Key not held";
+		} else {
+			ret = ret +pairs[i].value;
+		}
+		return ret;
+	}
 	public void delete(int key) {
 		int i;
 		for (i = 0; i < pairs.length; i++) {
@@ -247,7 +284,7 @@ public class NameServer extends Thread {
 						if(succ==1024) {
 							succ=0;
 						}else {
-							System.out.println(succ+" " + pred);
+							//System.out.println(succ+" " + pred);
 							PrintWriter succ_out = new PrintWriter(servers[succ].getOutputStream(), true);
 							BufferedReader succ_in = new BufferedReader(new InputStreamReader(servers[succ].getInputStream()));
 							succ_out.println("append");
@@ -288,7 +325,7 @@ public class NameServer extends Thread {
 				s = succ_in.readLine();
 				if (s==null) s="";
 				if(s.equals("append")) {
-					System.out.println("appending");
+					//System.out.println("appending");
 					int app = Integer.parseInt(succ_in.readLine());
 					Node temp[] = new Node[app+pairs.length];
 					for(int i = 0; i<app;i++) {
@@ -298,15 +335,13 @@ public class NameServer extends Thread {
 						temp[i]=pairs[i-app];
 					}
 					pairs = temp;
-					for(int l=0;l<pairs.length;l++) {
-						System.out.println(pairs[l].key+" "+pairs[l].value);
-					}
+					
 				} else if(s.equals("delete")) {
 					int del = Integer.parseInt(succ_in.readLine());
 					Node temp[] = new Node[pairs.length-del];
 					for(int i = 0; i<temp.length;i++) {
 						temp[i]=pairs[i+del];
-						System.out.println(pairs[i+del].key+" "+pairs[i+del].value);
+						//System.out.println(pairs[i+del].key+" "+pairs[i+del].value);
 					}
 					pairs = temp;
 					
